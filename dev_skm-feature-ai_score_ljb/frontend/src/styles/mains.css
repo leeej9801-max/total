@@ -1,0 +1,601 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fff;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+}
+#main_page .logo {
+    width: auto;
+    max-height: 50px;
+    object-fit: contain;
+}
+
+
+/* 메인 레이아웃 전용 스타일 확장 */
+#main_page {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#main_page .main-layout {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#main_page .content_box {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* 좌측 사이드바 기본 스타일 (데스크탑 기준) */
+#main_page .sidebar {
+    width: 260px;
+    background-color: #EFF6F1;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    height: auto;
+    flex-shrink: 0;
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s ease,
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#main_page .header .logo-placeholder {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 8px;
+    flex-shrink: 0;
+    width: 200px;
+}
+
+/* 메뉴 스크롤 영역 래퍼 */
+#main_page .nav-scroll-wrapper {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 메뉴 스크롤 영역 */
+#main_page .nav-scroll-area {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    margin-right: -10px;
+    padding-right: 10px;
+    scrollbar-width: none;
+}
+
+#main_page .nav-scroll-area::-webkit-scrollbar {
+    display: none;
+}
+
+#main_page .nav-group {
+    margin-bottom: 25px;
+}
+
+#main_page .nav-title {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#main_page .nav-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+    color: #40ad77;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+#main_page .nav-item:hover {
+    background-color: #f0fdf4;
+    color: #03a94d;
+}
+
+#main_page .nav-item.active {
+    background-color: #f0fdf4;
+    color: #03a94d;
+    font-weight: 600;
+}
+
+/* 사이드바 아코디언 UX */
+#main_page .nav-accordion-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+#main_page .nav-arrow {
+    transition: transform 0.3s ease-in-out;
+    width: 16px;
+    height: 16px;
+    color: #94a3b8;
+}
+
+#main_page .nav-arrow.expanded {
+    transform: rotate(90deg);
+}
+
+#main_page .nav-accordion-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), margin-bottom 0.35s ease;
+}
+
+#main_page .nav-accordion-content>.inner-wrapper {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 0;
+}
+
+#main_page .nav-accordion-content.expanded {
+    grid-template-rows: 1fr;
+    margin-bottom: 8px;
+}
+
+#main_page .sub-item {
+    padding-left: 30px;
+    font-size: 13px;
+    color: #666;
+}
+
+#main_page .nav-item.sub-item {
+    padding: 10px 15px 10px 35px;
+    margin-bottom: 0;
+    font-size: 13px;
+    position: relative;
+}
+
+#main_page .nav-item.sub-item:hover,
+#main_page .nav-item.sub-item.active {
+    color: #03a94d;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+#main_page .nav-item.sub-item.active::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #03a94d;
+}
+
+#main_page .nav-item.sub-sub-item {
+    padding: 8px 15px 8px 50px;
+    font-size: 12px;
+    color: #7f8c8d;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+#main_page .nav-item.sub-sub-item:hover {
+    color: #03a94d;
+    background-color: transparent;
+}
+
+#main_page .nav-item.sub-sub-item.active {
+    color: #03a94d;
+    font-weight: 600;
+}
+
+/* 사이드바 하단: 회사 선택 및 검색 */
+#main_page .sidebar-footer {
+    margin-top: auto;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    white-space: nowrap;
+    display: grid;
+    flex-shrink: 0;
+}
+
+#main_page .company-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #EFF6F1;
+    font-size: 13px;
+    outline: none;
+    appearance: none;
+}
+
+#main_page .company-search {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #EFF6F1;
+    font-size: 13px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+/* 우측 메인 영역 */
+#main_page .main_right_box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+#main_page .user-link {
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+#main_page .user-link span {
+    color: #03a94d;
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 6px;
+}
+
+#main_page .header-action {
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    position: relative;
+}
+
+#main_page .header-action:hover {
+    color: #03a94d;
+}
+
+/* 알림 미읽음 표시 점 (Red Dot) */
+#main_page .header-action .noti-dot {
+    position: absolute;
+    top: -2px;
+    right: -8px;
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    border: 1.5px solid #ffffff;
+}
+
+/* 중앙 컨텐츠 영역 */
+#main_page .content-body {
+    padding: 40px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* 프리미엄 대시보드 미니멀 스크롤 인디케이터 */
+#main_page .nav-dash-indicator {
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 20;
+    pointer-events: auto;
+    cursor: grab;
+    width: 24px;
+    align-items: flex-end;
+}
+
+#main_page .nav-dash-indicator:active {
+    cursor: grabbing;
+}
+
+#main_page .nav-dash-indicator .dash-item {
+    width: 10px;
+    height: 2px;
+    background-color: #94a3b8;
+    border-radius: 2px;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+/* 활성 상태 대시 */
+#main_page .nav-dash-indicator .dash-item.active {
+    width: 16px;
+    background-color: #334155;
+    opacity: 1;
+    transform: translateX(-6px);
+}
+
+/* 우측 엣지 플로팅 알림 토글 버튼 */
+#main_page .alarm-floating-toggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 60px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-right: none;
+    border-radius: 30px 0 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.08);
+    z-index: 90;
+    color: #475569;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#main_page .alarm-floating-toggle:hover {
+    background-color: #f8fafc;
+    color: #0f172a;
+    width: 32px;
+    border-color: #94a3b8;
+}
+
+#main_page .alarm-floating-toggle.hidden {
+    transform: translateY(-50%) translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 헤더 레이아웃 스타일 (데스크탑 기본) */
+#main_page .header {
+    height: 70px;
+    background: #EFF6F1;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    gap: 25px;
+    flex-shrink: 0;
+    margin-bottom: 0;
+}
+
+#main_page .header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#main_page .header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-left: auto;
+}
+
+/* 데스크탑 상단 토글 버튼 스타일 */
+#main_page .sidebar-toggle-btn {
+    background: none;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    cursor: pointer;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+#main_page .sidebar-toggle-btn:hover {
+    background-color: #f1f5f9;
+    color: #03a94d;
+    border-color: #94a3b8;
+}
+
+/* 데스크탑 좌측 사이드바 엣지 토글 버튼 */
+#main_page .sidebar-edge-toggle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 50px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+    color: #64748b;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                width 0.2s ease, 
+                background-color 0.2s ease, 
+                color 0.2s ease;
+}
+
+#main_page .sidebar-edge-toggle.open {
+    left: 260px;
+    border-left: none;
+    border-radius: 0 25px 25px 0;
+}
+
+#main_page .sidebar-edge-toggle.closed {
+    left: 0;
+    border-left: none;
+    border-radius: 0 25px 25px 0;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+}
+
+#main_page .sidebar-edge-toggle:hover {
+    background-color: #f0fdf4;
+    color: #03a94d;
+    width: 30px;
+    border-color: rgba(3, 169, 77, 0.3);
+}
+
+#main_page .sidebar-edge-toggle svg {
+    transition: transform 0.2s ease;
+}
+
+/* 기본값으로 모바일 컴포넌트들은 숨김 처리 */
+.mobile-hamburger,
+.sidebar-close-btn,
+.sidebar-overlay {
+    display: none;
+}
+
+
+/* ==========================================================================
+   화면 크기별 반응형 제어 (통합 관리 파트)
+   ========================================================================== */
+
+/* [데스크탑 환경] 801px 이상일 때 */
+@media (min-width: 801px) {
+    #main_page .sidebar.closed {
+        width: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        opacity: 0;
+        visibility: hidden;
+        border-right: none;
+        pointer-events: none;
+    }
+
+    #main_page .sidebar.closed .nav-scroll-wrapper,
+    #main_page .sidebar.closed .sidebar-footer {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+}
+
+/* [모바일 환경] 800px 이하일 때 */
+@media (max-width: 800px) {
+
+    /* 2. 모바일 햄버거 버튼 노출 및 정렬 */
+    #main_page .mobile-hamburger {
+        display: flex !important;
+        position: static;
+        width: 36px;
+        height: 36px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        color: #334155;
+        align-items: center;
+        justify-content: center;
+        box-shadow: none;
+        transition: all 0.2s ease;
+    }
+
+    #main_page .mobile-hamburger:hover {
+        background-color: #f0fdf4;
+        color: #03a94d;
+        border-color: rgba(3, 169, 77, 0.3);
+    }
+    #main_page .sidebar-edge-toggle.open{
+        left: 280px;
+    }
+
+    /* 3. 모바일 사이드바 기본 상태: 왼쪽 바깥으로 완전히 격리 숨김 */
+    #main_page .sidebar {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        width: 280px !important;
+        transform: translateX(-100%) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        box-shadow: none;
+        border-right: 1px solid #eee;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.2s ease,
+                    visibility 0.3s;
+    }
+
+    /* 4. 모바일 active 제어 (오픈 상태) */
+    #main_page .sidebar.open {
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 5. 모바일 closed 명시 */
+    #main_page .sidebar.closed {
+        transform: translateX(-100%) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* 6. 모바일 해상도 헤더 구조 리사이징 */
+    #main_page .header {
+        padding: 0 20px !important;
+    }
+
+    #main_page .header-left-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    #main_page .header .logo-placeholder {
+        width: 100px;
+    }
+    
+    #main_page .header-right-group {
+        gap: 14px;
+    }
+
+
+
+    /* 8. 뒷배경 흐림/암전용 오버레이 */
+    #main_page .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 999;
+    }
+}
