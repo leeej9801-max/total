@@ -12,6 +12,7 @@ import {
 import { POST } from "@utils/Network";
 
 const MEDIA_SOURCE_OPTIONS = [
+  { value: "all", label: "전체 (임팩트온 + ESG경제)" },
   { value: "impacton", label: "임팩트온" },
   { value: "esgeconomy", label: "ESG경제" },
 ];
@@ -45,7 +46,7 @@ const Media = () => {
   });
 
   const [formData, setFormData] = useState({
-    pressSource: "impacton",
+    pressSource: "all",
 
     regOrg: "",
 
@@ -177,6 +178,11 @@ const Media = () => {
       return;
     }
 
+    const selectedSources =
+      formData.pressSource === "all"
+        ? ["impacton", "esgeconomy"]
+        : [formData.pressSource];
+
     setIsAnalyzing(true);
     setDashboardOpen(true);
     setShowResult(false);
@@ -196,7 +202,7 @@ const Media = () => {
     try {
       const response = await POST("/api/v1/media/news/crawl-and-analyze", {
         runId: 1, // 테스트용 하드코딩된 runId
-        sources: [formData.pressSource],
+        sources: selectedSources,
         dateFrom: formData.pressStartDate,
         dateTo: formData.pressEndDate,
       });
