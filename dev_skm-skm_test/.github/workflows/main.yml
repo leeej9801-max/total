@@ -1,0 +1,69 @@
+name: Windows PC Job
+
+on:
+  push:
+    branches: [ "main", "skm_test" ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: .
+
+      - name: Install Modules
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Create .env 
+        working-directory: ./frontend
+        run: |
+          "VITE_API_URL=${{ secrets.VITE_API_URL }}" | Set-Content -Path .env -Encoding UTF8
+          "VITE_API_URL_MAIN=${{ secrets.VITE_API_URL_MAIN }}" | Add-Content -Path .env
+          "VITE_API_URL_SKM=${{ secrets.VITE_API_URL_SKM }}" | Add-Content -Path .env
+          "VITE_API_URL_SKM_BACK=${{ secrets.VITE_API_URL_SKM_BACK }}" | Add-Content -Path .env
+          "VITE_API_URL_HG=${{ secrets.VITE_API_URL_HG }}" | Add-Content -Path .env
+          "VITE_API_URL_TV=${{ secrets.VITE_API_URL_TV }}" | Add-Content -Path .env
+      - name: Node Build
+        working-directory: ./frontend
+        run: npm run build
+      
+      - name: Docker Down
+        working-directory: .
+        run: docker compose down
+        continue-on-error: true
+
+
+      - name: Docker Up
+        env:
+          HOST_IP: ${{ secrets.HOST_IP }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+          KAFKA_SERVER: ${{ secrets.KAFKA_SERVER }}
+          KAFKA_TOPIC: ${{ secrets.KAFKA_TOPIC }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
+          REFRESH_TOKEN_EXPIRE_DAYS: ${{ secrets.REFRESH_TOKEN_EXPIRE_DAYS }}
+          INVITE_TOKEN_EXPIRE_DAYS: ${{ secrets.INVITE_TOKEN_EXPIRE_DAYS }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_DB1: ${{ secrets.REDIS_DB1 }}
+          REDIS_DB2: ${{ secrets.REDIS_DB2 }}
+          REDIS_DB3: ${{ secrets.REDIS_DB3 }}
+          SERVICE_KEY: ${{ secrets.SERVICE_KEY }}
+          MARIA_DB_DATABASE: ${{ secrets.MARIA_DB_DATABASE }}
+          MARIA_DB_USER: ${{ secrets.MARIA_DB_USER }}
+          MARIA_DB_PASSWORD: ${{ secrets.MARIA_DB_PASSWORD }}
+          MARIA_DB_HOST: ${{ secrets.MARIA_DB_HOST }}
+          MARIA_DB_PORT: ${{ secrets.MARIA_DB_PORT }}
+          MARIA_DB_KEY: ${{ secrets.MARIA_DB_KEY }}
+          COOKIE_KEY: ${{ secrets.COOKIE_KEY }}
+          FILE_DIR: ${{ secrets.FILE_DIR }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
+        working-directory: .
+        run: docker compose up -d

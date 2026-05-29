@@ -1,0 +1,90 @@
+services:
+  frontend:
+    container_name: frontend
+    image: nginx:1.28
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      - main-network
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./frontend/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  backend:
+    container_name: backend
+    image: uv:1
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - main-network
+    # depends_on:
+    #   - mariadb
+    working_dir: /workspace
+    volumes:
+      - ./backend/main.py:/workspace/main.py
+      - ./backend/settings.py:/workspace/settings.py
+      - ./backend/pyproject.toml:/workspace/pyproject.toml
+      - ./backend/uv.lock:/workspace/uv.lock
+      - ./backend/.python-version:/workspace/.python-version
+      - ./backend/src:/workspace/src
+      - ./backend/srfiles:/workspace/srfiles
+      - skm_secrets:/workspace/secrets
+      
+    environment:
+      - HOST_IP=${HOST_IP}
+      - DOMAIN=${DOMAIN}
+      - KAFKA_SERVER=${KAFKA_SERVER}
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM=${MAIL_FROM}
+      - MARIA_DB_DATABASE=${MARIA_DB_DATABASE}
+      - MARIA_DB_USER=${MARIA_DB_USER}
+      - MARIA_DB_PASSWORD=${MARIA_DB_PASSWORD}
+      - MARIA_DB_HOST=${MARIA_DB_HOST}
+      - MARIA_DB_PORT=${MARIA_DB_PORT}
+      - MARIA_DB_KEY=${MARIA_DB_KEY}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+      - REFRESH_TOKEN_EXPIRE_DAYS=${REFRESH_TOKEN_EXPIRE_DAYS}
+      - INVITE_TOKEN_EXPIRE_DAYS=${INVITE_TOKEN_EXPIRE_DAYS}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DB1=${REDIS_DB1}
+      - REDIS_DB2=${REDIS_DB2}
+      - REDIS_DB3=${REDIS_DB3}
+      - SERVICE_KEY=${SERVICE_KEY}
+      - COOKIE_KEY=${COOKIE_KEY}
+      - FILE_DIR=${FILE_DIR}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+    command: ["uv", "run", "fastapi", "run"]
+
+  # mariadb:
+  #   container_name: mariadb
+  #   image: mariadb:12.1.2
+  #   restart: always
+  #   ports:
+  #     - 3306:3306
+  #   networks:
+  #     - main-network
+  #   volumes:
+  #     - ./.mariadb/conf.d:/etc/mysql/conf.d:ro
+  #     - ./.mariadb/initdb.d:/docker-entrypoint-initdb.d:ro
+  #     - data-mariadb:/var/lib/mysql:rw
+  #   environment:
+  #     - MARIADB_HOST=localhost
+  #     - MARIADB_PORT=3306
+  #     - MARIADB_ROOT_PASSWORD=1234
+  #     - MARIADB_DATABASE=edu
+  #     - TZ=Asia/Seoul
+  #     - LC_ALL:en_US.UTF-8
+
+networks:
+  main-network: 
+    driver: bridge
+
+volumes:
+  skm_secrets:
+    external: true
